@@ -153,6 +153,21 @@
       box-shadow: none;
     }
 
+    .item-icon-wrap--match {
+      width: 100%;
+      height: 52px;
+      font-size: 24px;
+      gap: 8px;
+      justify-content: center;
+    }
+
+    .match-vs {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.12em;
+      color: #3f5f4f;
+    }
+
     .item-name {
       font-weight: 600;
       font-size: 15px;
@@ -313,6 +328,73 @@
       height: 12px;
       border-radius: 999px;
       border: 1px solid rgba(15,23,42,0.18);
+    }
+
+    .match-meta {
+      margin-bottom: 12px;
+      padding: 12px;
+      border-radius: 12px;
+      border: 1px solid #d6e8dd;
+      background: #f6fbf8;
+      font-size: 13px;
+      color: #365446;
+    }
+
+    .match-meta strong {
+      color: #1f5f3d;
+    }
+
+    .match-team-columns {
+      display: grid;
+      grid-template-columns: 1fr;
+      gap: 12px;
+    }
+
+    .team-panel {
+      border: 1px solid #d6e8dd;
+      border-radius: 12px;
+      padding: 10px;
+      background: #ffffff;
+    }
+
+    .team-panel-title {
+      font-size: 15px;
+      font-weight: 700;
+      margin-bottom: 8px;
+      color: #1f5f3d;
+    }
+
+    .player-list {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+
+    .player-link {
+      width: 100%;
+      border: 1px solid #deefe3;
+      background: #f6fbf8;
+      border-radius: 10px;
+      padding: 8px 10px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      text-align: left;
+      color: #1f2933;
+    }
+
+    .player-link-left {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      font-size: 14px;
+      font-weight: 600;
+    }
+
+    .player-link-meta {
+      font-size: 11px;
+      color: var(--text-muted);
     }
 
     .order-panel {
@@ -499,30 +581,25 @@
       <div class="app-logo" aria-hidden="true">⚽</div>
       <div class="app-title">
         <div class="app-title-main">BIMM Soccer</div>
-        <div class="app-title-sub">Simple team and player directory</div>
       </div>
     </header>
     <main class="app-body">
-      <section id="list-view" aria-label="Team list">
-        <div class="page-label">Choose a team</div>
-        <div class="page-heading">Tap a team to view players</div>
-        <div class="pill-row">
-          <div class="pill pill--accent">4 teams</div>
-          <div class="pill">4 players each</div>
-          <div class="pill">Local JSON configurable</div>
-        </div>
+      <section id="list-view" aria-label="Match list">
+        <div class="page-label">Upcoming matches</div>
+        <div class="page-heading">Choose a match</div>
         <div id="items-grid" class="grid" aria-live="polite"></div>
       </section>
-      <section id="players-view" hidden aria-label="Player list">
+      <section id="match-view" hidden aria-label="Match details">
         <div class="detail-top-row" style="margin-bottom: 10px;">
-          <div class="back-link" id="back-to-teams">
-            <span>←</span><span>Teams</span>
+          <div class="back-link" id="back-to-matches">
+            <span>←</span><span>Matches</span>
           </div>
-          <div class="badge-soft" id="players-count-badge">4 players</div>
+          <div class="badge-soft" id="match-time-badge">Kickoff</div>
         </div>
-        <div class="page-label">Team players</div>
-        <div class="page-heading" id="players-heading">Select a player</div>
-        <div id="players-grid" class="grid" aria-live="polite"></div>
+        <div class="page-label">Match details</div>
+        <div class="page-heading" id="match-heading">Team A vs Team B</div>
+        <div id="match-meta" class="match-meta"></div>
+        <div id="match-team-columns" class="match-team-columns"></div>
       </section>
       <section id="detail-view" hidden aria-label="Player details"></section>
     </main>
@@ -627,22 +704,63 @@
 
     const teamsData = loadTeamsData();
 
-    const teamsView = document.getElementById('list-view');
-    const playersView = document.getElementById('players-view');
-    const detailView = document.getElementById('detail-view');
-    const teamsGrid = document.getElementById('items-grid');
-    const playersGrid = document.getElementById('players-grid');
-    const playersHeading = document.getElementById('players-heading');
-    const playersCountBadge = document.getElementById('players-count-badge');
+    const matchesData = [
+      {
+        id: 'match-1',
+        teamAId: teamsData[0]?.id,
+        teamBId: teamsData[1]?.id,
+        venue: 'BIMM Main Stadium',
+        kickoff: '6:30 PM'
+      },
+      {
+        id: 'match-2',
+        teamAId: teamsData[2]?.id,
+        teamBId: teamsData[3]?.id,
+        venue: 'City Sports Arena',
+        kickoff: '8:00 PM'
+      },
+      {
+        id: 'match-3',
+        teamAId: teamsData[0]?.id,
+        teamBId: teamsData[2]?.id,
+        venue: 'Greenfield Park',
+        kickoff: '5:45 PM'
+      },
+      {
+        id: 'match-4',
+        teamAId: teamsData[1]?.id,
+        teamBId: teamsData[3]?.id,
+        venue: 'Riverfront Arena',
+        kickoff: '7:15 PM'
+      },
+      {
+        id: 'match-5',
+        teamAId: teamsData[0]?.id,
+        teamBId: teamsData[3]?.id,
+        venue: 'North City Ground',
+        kickoff: '9:00 PM'
+      }
+    ].filter(match => match.teamAId && match.teamBId);
 
-    function makeCard({ icon, chip, name, tagline, onActivate }) {
+    const matchesView = document.getElementById('list-view');
+    const matchView = document.getElementById('match-view');
+    const detailView = document.getElementById('detail-view');
+    const matchesGrid = document.getElementById('items-grid');
+    const matchHeading = document.getElementById('match-heading');
+    const matchMeta = document.getElementById('match-meta');
+    const matchTimeBadge = document.getElementById('match-time-badge');
+    const matchTeamColumns = document.getElementById('match-team-columns');
+
+    let currentMatchId = null;
+
+    function makeCard({ icon, chip, name, tagline, onActivate, iconClass = '' }) {
       const card = document.createElement('article');
       card.className = 'item-card';
       card.tabIndex = 0;
       card.setAttribute('role', 'button');
       card.setAttribute('aria-label', `Open details for ${name}`);
       card.innerHTML = `
-        <div class="item-icon-wrap">${icon}</div>
+        <div class="item-icon-wrap ${iconClass}">${icon}</div>
         <div class="item-chip">${chip}</div>
         <div class="item-name">${name}</div>
         <div class="item-tagline">${tagline}</div>
@@ -659,70 +777,108 @@
       return card;
     }
 
-    function renderTeams() {
-      teamsGrid.innerHTML = '';
-      teamsData.forEach(team => {
-        teamsGrid.appendChild(
+    function getTeamById(teamId) {
+      return teamsData.find(team => team.id === teamId);
+    }
+
+    function renderMatches() {
+      matchesGrid.innerHTML = '';
+      matchesData.forEach(match => {
+        const teamA = getTeamById(match.teamAId);
+        const teamB = getTeamById(match.teamBId);
+        if (!teamA || !teamB) return;
+
+        matchesGrid.appendChild(
           makeCard({
-            icon: team.badge,
-            chip: 'Team',
-            name: team.name,
-            tagline: `${team.players.length} players`,
-            onActivate: () => openPlayers(team.id)
+            icon: `${teamA.badge}<span class="match-vs">VS</span>${teamB.badge}`,
+            iconClass: 'item-icon-wrap--match',
+            chip: 'Match',
+            name: `${teamA.name} vs ${teamB.name}`,
+            tagline: `${match.venue} • ${match.kickoff}`,
+            onActivate: () => openMatch(match.id)
           })
         );
       });
     }
 
-    function openPlayers(teamId) {
-      const team = teamsData.find(entry => entry.id === teamId);
-      if (!team) return;
+    function renderTeamPanel(matchId, team, sideLabel) {
+      const panel = document.createElement('div');
+      panel.className = 'team-panel';
 
-      teamsView.hidden = true;
-      detailView.hidden = true;
-      playersView.hidden = false;
+      const title = document.createElement('div');
+      title.className = 'team-panel-title';
+      title.textContent = `${sideLabel}: ${team.name}`;
 
-      playersHeading.textContent = team.name;
-      playersCountBadge.textContent = `${team.players.length} players`;
-      playersGrid.innerHTML = '';
+      const list = document.createElement('div');
+      list.className = 'player-list';
 
       team.players.forEach((player, index) => {
-        playersGrid.appendChild(
-          makeCard({
-            icon: player.avatar,
-            chip: 'Player',
-            name: player.name,
-            tagline: `${player.position} • Goals: ${player.goalsScored}`,
-            onActivate: () => openPlayerDetail(team.id, index)
-          })
-        );
+        const button = document.createElement('button');
+        button.className = 'player-link';
+        button.type = 'button';
+        button.innerHTML = `
+          <span class="player-link-left"><span>${player.avatar}</span><span>${player.name}</span></span>
+          <span class="player-link-meta">${player.position}</span>
+        `;
+        button.addEventListener('click', () => openPlayerDetail(matchId, team.id, index));
+        list.appendChild(button);
       });
+
+      panel.appendChild(title);
+      panel.appendChild(list);
+      return panel;
     }
 
-    function openPlayerDetail(teamId, playerIndex) {
-      const team = teamsData.find(entry => entry.id === teamId);
+    function openMatch(matchId) {
+      const match = matchesData.find(entry => entry.id === matchId);
+      if (!match) return;
+
+      const teamA = getTeamById(match.teamAId);
+      const teamB = getTeamById(match.teamBId);
+      if (!teamA || !teamB) return;
+
+      currentMatchId = matchId;
+      matchesView.hidden = true;
+      detailView.hidden = true;
+      matchView.hidden = false;
+
+      matchHeading.textContent = `${teamA.name} vs ${teamB.name}`;
+      matchTimeBadge.textContent = match.kickoff;
+      matchMeta.innerHTML = `<strong>Venue:</strong> ${match.venue}<br><strong>Time:</strong> ${match.kickoff}`;
+
+      matchTeamColumns.innerHTML = '';
+      matchTeamColumns.appendChild(renderTeamPanel(matchId, teamA, 'Team A'));
+      matchTeamColumns.appendChild(renderTeamPanel(matchId, teamB, 'Team B'));
+    }
+
+    function openPlayerDetail(matchId, teamId, playerIndex) {
+      const match = matchesData.find(entry => entry.id === matchId);
+      if (!match) return;
+
+      const team = getTeamById(teamId);
       if (!team) return;
 
+      const opponent = team.id === match.teamAId ? getTeamById(match.teamBId) : getTeamById(match.teamAId);
       const player = team.players[playerIndex];
       if (!player) return;
 
-      playersView.hidden = true;
+      matchView.hidden = true;
       detailView.hidden = false;
 
       detailView.innerHTML = `
         <div class="page-label">Player details</div>
         <div class="detail-layout">
           <div class="detail-top-row">
-            <div class="back-link" id="back-to-players">
-              <span>←</span><span>Players</span>
+            <div class="back-link" id="back-to-match">
+              <span>←</span><span>Match</span>
             </div>
-            <div class="badge-soft">${team.name}</div>
+            <div class="badge-soft">${team.name} vs ${opponent ? opponent.name : ''}</div>
           </div>
           <div class="detail-hero">
             <div class="detail-icon">${player.avatar}</div>
             <div>
               <div class="detail-title">${player.name}</div>
-              <div class="detail-subtitle">${team.name}</div>
+              <div class="detail-subtitle">${team.name} • ${match.kickoff}</div>
               <div class="detail-body">${player.position} profile</div>
             </div>
           </div>
@@ -741,19 +897,19 @@
         </div>
       `;
 
-      document.getElementById('back-to-players').addEventListener('click', () => {
+      document.getElementById('back-to-match').addEventListener('click', () => {
         detailView.hidden = true;
-        openPlayers(team.id);
+        openMatch(match.id);
       });
     }
 
-    document.getElementById('back-to-teams').addEventListener('click', () => {
-      playersView.hidden = true;
+    document.getElementById('back-to-matches').addEventListener('click', () => {
+      matchView.hidden = true;
       detailView.hidden = true;
-      teamsView.hidden = false;
+      matchesView.hidden = false;
     });
 
-    renderTeams();
+    renderMatches();
   </script>
 </body>
 </html>

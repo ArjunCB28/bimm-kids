@@ -24,16 +24,17 @@
         radial-gradient(circle at top, rgba(251, 191, 36, 0.28), transparent 34%),
         linear-gradient(180deg, #fff7ed 0%, #fefce8 45%, #eff6ff 100%);
       color: var(--text-main);
-      min-height: 100vh;
+      min-height: 100svh;
       display: flex;
       justify-content: center;
-      align-items: center;
+      align-items: stretch;
       padding: 16px;
     }
 
     .app-shell {
       width: 100%;
       max-width: 480px;
+      min-height: calc(100svh - 32px);
       background: rgba(255,255,255,0.88);
       border-radius: 24px;
       border: 1px solid rgba(251,146,60,0.25);
@@ -43,7 +44,7 @@
     }
 
     .app-header {
-      padding: 16px 20px 10px;
+      padding: 18px 20px 14px;
       display: flex;
       align-items: center;
       gap: 10px;
@@ -66,18 +67,33 @@
     .app-title {
       display: flex;
       flex-direction: column;
+      gap: 2px;
+      padding: 10px 14px;
+      border-radius: 18px;
+      background: rgba(255,255,255,0.72);
+      border: 1px solid rgba(255,255,255,0.65);
+      box-shadow: 0 10px 24px rgba(249,115,22,0.1);
+      backdrop-filter: blur(12px);
     }
 
     .app-title-main {
-      font-weight: 700;
-      letter-spacing: 0.04em;
-      font-size: 16px;
+      font-weight: 900;
+      letter-spacing: 0.05em;
+      font-size: 24px;
+      line-height: 1;
       text-transform: uppercase;
+      background: linear-gradient(135deg, #ea580c, #f59e0b 48%, #0284c7);
+      -webkit-background-clip: text;
+      background-clip: text;
+      color: transparent;
+      text-shadow: 0 8px 20px rgba(249, 115, 22, 0.12);
     }
 
     .app-title-sub {
-      font-size: 11px;
-      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.02em;
+      color: #475569;
     }
 
     .app-body {
@@ -144,14 +160,14 @@
     .item-card:hover::before { opacity: 1; }
 
     .item-icon-wrap {
-      width: 52px;
-      height: 52px;
+      width: 60px;
+      height: 60px;
       border-radius: 18px;
       background: radial-gradient(circle at 20% 20%, #fef3c7, var(--primary-accent));
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 28px;
+      font-size: 34px;
       margin-bottom: 8px;
       box-shadow: 0 12px 22px rgba(249,115,22,0.24);
     }
@@ -289,7 +305,7 @@
 
     .order-panel {
       margin-top: 14px;
-      padding: 10px 10px 12px;
+      padding: 14px;
       border-radius: 16px;
       background: radial-gradient(circle at top right, rgba(16,185,129,0.16), rgba(255,255,255,0.95));
       border: 1px solid rgba(34,197,94,0.25);
@@ -300,25 +316,25 @@
       display: inline-flex;
       justify-content: center;
       align-items: center;
-      gap: 8px;
-      padding: 11px 14px;
+      gap: 10px;
+      padding: 16px 18px;
       border-radius: 999px;
       border: none;
       background: linear-gradient(135deg, #22c55e, #4ade80);
       color: var(--button-text);
-      font-weight: 700;
+      font-weight: 800;
       text-transform: uppercase;
       letter-spacing: 0.16em;
-      font-size: 12px;
+      font-size: 16px;
       cursor: pointer;
       box-shadow: 0 14px 30px rgba(34,197,94,0.28);
     }
 
-    .order-button span:first-child { font-size: 16px; }
+    .order-button span:first-child { font-size: 22px; }
 
     .order-meta {
-      margin-top: 8px;
-      font-size: 11px;
+      margin-top: 10px;
+      font-size: 13px;
       color: var(--text-muted);
       display: flex;
       align-items: center;
@@ -369,12 +385,81 @@
       font-size: 12px;
     }
 
+    .success-section {
+      margin-top: 16px;
+      padding: 18px 16px;
+      border-radius: 22px;
+      background: linear-gradient(180deg, rgba(220,252,231,0.95), rgba(255,255,255,0.96));
+      border: 1px solid rgba(34,197,94,0.28);
+      box-shadow: 0 16px 30px rgba(34,197,94,0.12);
+    }
+
+    .success-top {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      margin-bottom: 10px;
+    }
+
+    .success-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 16px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      background: linear-gradient(135deg, #22c55e, #86efac);
+      box-shadow: 0 12px 24px rgba(34,197,94,0.18);
+    }
+
+    .success-label {
+      font-size: 11px;
+      font-weight: 700;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: #15803d;
+      margin-bottom: 4px;
+    }
+
+    .success-title {
+      font-size: 22px;
+      font-weight: 800;
+      color: #14532d;
+      line-height: 1.1;
+    }
+
+    .success-message {
+      font-size: 15px;
+      line-height: 1.5;
+      color: #166534;
+    }
+
+    .success-note {
+      margin-top: 12px;
+      padding-top: 12px;
+      border-top: 1px solid rgba(34,197,94,0.2);
+      font-size: 13px;
+      color: #3f6212;
+    }
+
     @media (max-width: 480px) {
-      body { padding: 8px; }
-      .app-shell { border-radius: 16px; }
+      body {
+        padding: 0;
+        justify-content: stretch;
+      }
+      .app-shell {
+        max-width: 100%;
+        min-height: 100svh;
+        border-radius: 0;
+        border: none;
+      }
       .grid { grid-template-columns: 1fr; }
       .detail-hero { gap: 10px; }
       .detail-icon { width: 80px; height: 80px; font-size: 48px; }
+      .app-title-main { font-size: 26px; }
+      .app-title-sub { font-size: 12px; }
+      .order-button { font-size: 17px; }
     }
   </style>
 </head>
@@ -383,8 +468,8 @@
     <header class="app-header">
       <div class="app-logo" aria-hidden="true">🚗</div>
       <div class="app-title">
-        <div class="app-title-main">Kids Garage</div>
-        <div class="app-title-sub">Pick a fun ride &amp; collect it in person</div>
+        <div class="app-title-main">BIMM Kids Garage</div>
+        <div class="app-title-sub">Pick a fun ride and collect it in person</div>
       </div>
     </header>
     <main class="app-body">
@@ -518,13 +603,19 @@
       document.getElementById('order-button').addEventListener('click', () => {
         const status = document.getElementById('status-area');
         status.innerHTML = `
-          <div class="status-banner">
-            <div class="status-icon">✅</div>
-            <div>
-              <div class="status-label">Order placed</div>
-              <div class="status-main">Go collect it from the store when your name is called!</div>
+          <section class="success-section" aria-live="polite">
+            <div class="success-top">
+              <div class="success-icon">✅</div>
+              <div>
+                <div class="success-label">Order successfully placed</div>
+                <div class="success-title">${item.name} is booked for pickup</div>
+              </div>
             </div>
-          </div>
+            <div class="success-message">
+              Your order has been placed successfully. Go to the store and collect it when your name is called.
+            </div>
+            <div class="success-note">Show this screen to a grown-up when it is time to pick up your toy.</div>
+          </section>
         `;
       });
     }

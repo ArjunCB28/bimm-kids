@@ -1,0 +1,535 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Kids Store</title>
+  <style>
+    :root {
+      --primary-bg: #fff8ef;
+      --primary-accent: #f97316;
+      --primary-accent-soft: #ffedd5;
+      --card-bg: #ffffff;
+      --text-main: #1f2937;
+      --text-muted: #6b7280;
+      --button-bg: #22c55e;
+      --button-bg-soft: #dcfce7;
+      --button-text: #14532d;
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+      background:
+        radial-gradient(circle at top, rgba(251, 191, 36, 0.28), transparent 34%),
+        linear-gradient(180deg, #fff7ed 0%, #fefce8 45%, #eff6ff 100%);
+      color: var(--text-main);
+      min-height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 16px;
+    }
+
+    .app-shell {
+      width: 100%;
+      max-width: 480px;
+      background: rgba(255,255,255,0.88);
+      border-radius: 24px;
+      border: 1px solid rgba(251,146,60,0.25);
+      box-shadow: 0 24px 60px rgba(251,146,60,0.18);
+      overflow: hidden;
+      backdrop-filter: blur(14px);
+    }
+
+    .app-header {
+      padding: 16px 20px 10px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(135deg, rgba(249,115,22,0.2), rgba(125,211,252,0.22));
+      border-bottom: 1px solid rgba(251,146,60,0.2);
+    }
+
+    .app-logo {
+      width: 32px;
+      height: 32px;
+      border-radius: 999px;
+      background: radial-gradient(circle at 30% 30%, #fee2e2, #f97316);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 20px;
+      box-shadow: 0 0 0 3px rgba(255,255,255,0.65);
+    }
+
+    .app-title {
+      display: flex;
+      flex-direction: column;
+    }
+
+    .app-title-main {
+      font-weight: 700;
+      letter-spacing: 0.04em;
+      font-size: 16px;
+      text-transform: uppercase;
+    }
+
+    .app-title-sub {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .app-body {
+      padding: 16px 16px 20px;
+      max-height: 80vh;
+      overflow-y: auto;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(251,146,60,0.45) transparent;
+    }
+
+    .app-body::-webkit-scrollbar { width: 6px; }
+    .app-body::-webkit-scrollbar-thumb {
+      background: rgba(251,146,60,0.45);
+      border-radius: 999px;
+    }
+
+    .page-label {
+      font-size: 12px;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 8px;
+    }
+
+    .page-heading {
+      font-size: 22px;
+      font-weight: 700;
+      margin-bottom: 16px;
+    }
+
+    .grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 14px;
+    }
+
+    .item-card {
+      position: relative;
+      background: radial-gradient(circle at top left, rgba(255,237,213,0.9), var(--card-bg));
+      border-radius: 18px;
+      padding: 10px 10px 12px;
+      border: 1px solid rgba(251,146,60,0.22);
+      cursor: pointer;
+      overflow: hidden;
+      transition: transform 0.14s ease, box-shadow 0.14s ease, border-color 0.14s ease;
+    }
+
+    .item-card::before {
+      content: "";
+      position: absolute;
+      inset: -40%;
+      background: radial-gradient(circle at 0 0, rgba(249,115,22,0.18), transparent 55%);
+      opacity: 0;
+      transition: opacity 0.2s ease;
+      pointer-events: none;
+    }
+
+    .item-card:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 18px 32px rgba(251,146,60,0.22);
+      border-color: rgba(249,115,22,0.45);
+    }
+
+    .item-card:hover::before { opacity: 1; }
+
+    .item-icon-wrap {
+      width: 52px;
+      height: 52px;
+      border-radius: 18px;
+      background: radial-gradient(circle at 20% 20%, #fef3c7, var(--primary-accent));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 28px;
+      margin-bottom: 8px;
+      box-shadow: 0 12px 22px rgba(249,115,22,0.24);
+    }
+
+    .item-name {
+      font-weight: 600;
+      font-size: 15px;
+      margin-bottom: 4px;
+    }
+
+    .item-tagline {
+      font-size: 11px;
+      color: var(--text-muted);
+    }
+
+    .item-chip {
+      position: absolute;
+      right: 10px;
+      top: 10px;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      padding: 4px 7px;
+      border-radius: 999px;
+      background: rgba(34,197,94,0.12);
+      color: #166534;
+      border: 1px solid rgba(74,222,128,0.45);
+    }
+
+    .pill-row {
+      display: flex;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+
+    .pill {
+      padding: 4px 9px;
+      border-radius: 999px;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.14em;
+      border: 1px solid rgba(251,146,60,0.2);
+      color: var(--text-muted);
+      background: rgba(255,255,255,0.82);
+    }
+
+    .pill--accent {
+      border-color: rgba(249,115,22,0.5);
+      color: #c2410c;
+      background: rgba(249,115,22,0.1);
+    }
+
+    .detail-layout {
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+
+    .detail-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .back-link {
+      font-size: 11px;
+      color: var(--text-muted);
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      cursor: pointer;
+      opacity: 0.85;
+      padding: 3px 7px;
+      border-radius: 999px;
+      border: 1px solid rgba(251,146,60,0.22);
+      background: rgba(255,255,255,0.85);
+    }
+
+    .back-link span:first-child {
+      font-size: 14px;
+      transform: translateY(1px);
+    }
+
+    .badge-soft {
+      padding: 5px 9px;
+      border-radius: 999px;
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 0.13em;
+      background: var(--button-bg-soft);
+      color: var(--button-text);
+    }
+
+    .detail-hero {
+      display: flex;
+      gap: 14px;
+      align-items: center;
+    }
+
+    .detail-icon {
+      width: 90px;
+      height: 90px;
+      border-radius: 28px;
+      background: radial-gradient(circle at 25% 25%, #fef9c3, var(--primary-accent));
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 56px;
+      box-shadow: 0 18px 35px rgba(249,115,22,0.22);
+    }
+
+    .detail-title {
+      font-size: 20px;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .detail-subtitle {
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+    }
+
+    .detail-body {
+      font-size: 13px;
+      line-height: 1.5;
+      color: #334155;
+    }
+
+    .detail-body-emoji {
+      font-size: 16px;
+      margin-right: 4px;
+    }
+
+    .order-panel {
+      margin-top: 14px;
+      padding: 10px 10px 12px;
+      border-radius: 16px;
+      background: radial-gradient(circle at top right, rgba(16,185,129,0.16), rgba(255,255,255,0.95));
+      border: 1px solid rgba(34,197,94,0.25);
+    }
+
+    .order-button {
+      width: 100%;
+      display: inline-flex;
+      justify-content: center;
+      align-items: center;
+      gap: 8px;
+      padding: 11px 14px;
+      border-radius: 999px;
+      border: none;
+      background: linear-gradient(135deg, #22c55e, #4ade80);
+      color: var(--button-text);
+      font-weight: 700;
+      text-transform: uppercase;
+      letter-spacing: 0.16em;
+      font-size: 12px;
+      cursor: pointer;
+      box-shadow: 0 14px 30px rgba(34,197,94,0.28);
+    }
+
+    .order-button span:first-child { font-size: 16px; }
+
+    .order-meta {
+      margin-top: 8px;
+      font-size: 11px;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .pulse-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 999px;
+      background: #22c55e;
+      box-shadow: 0 0 0 0 rgba(34,197,94,0.8);
+      animation: pulse 1.6s infinite;
+    }
+
+    @keyframes pulse {
+      0% { box-shadow: 0 0 0 0 rgba(34,197,94,0.7); }
+      70% { box-shadow: 0 0 0 8px rgba(34,197,94,0); }
+      100% { box-shadow: 0 0 0 0 rgba(34,197,94,0); }
+    }
+
+    .status-banner {
+      margin-top: 14px;
+      padding: 10px 11px;
+      border-radius: 999px;
+      background: rgba(255,255,255,0.76);
+      border: 1px dashed rgba(34,197,94,0.4);
+      font-size: 12px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      color: #1f2937;
+    }
+
+    .status-icon {
+      font-size: 18px;
+    }
+
+    .status-label {
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.12em;
+      font-size: 10px;
+      color: var(--text-muted);
+    }
+
+    .status-main {
+      font-size: 12px;
+    }
+
+    @media (max-width: 480px) {
+      body { padding: 8px; }
+      .app-shell { border-radius: 16px; }
+      .grid { grid-template-columns: 1fr; }
+      .detail-hero { gap: 10px; }
+      .detail-icon { width: 80px; height: 80px; font-size: 48px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app-shell">
+    <header class="app-header">
+      <div class="app-logo" aria-hidden="true">🚗</div>
+      <div class="app-title">
+        <div class="app-title-main">Kids Garage</div>
+        <div class="app-title-sub">Pick a fun ride &amp; collect it in person</div>
+      </div>
+    </header>
+    <main class="app-body">
+      <section id="list-view" aria-label="Toy list">
+        <div class="page-label">Choose your ride</div>
+        <div class="page-heading">Tap a toy to order</div>
+        <div class="pill-row">
+          <div class="pill pill--accent">No prices – just fun</div>
+          <div class="pill">Collect at the store</div>
+        </div>
+        <div id="items-grid" class="grid" aria-live="polite"></div>
+      </section>
+      <section id="detail-view" hidden aria-label="Toy details"></section>
+    </main>
+  </div>
+
+  <script>
+    const theme = {
+      primaryBg: getComputedStyle(document.documentElement).getPropertyValue('--primary-bg'),
+      accent: getComputedStyle(document.documentElement).getPropertyValue('--primary-accent')
+    };
+
+    const itemsData = [
+      {
+        id: 'speedster-car',
+        name: 'Turbo Speedster',
+        emoji: '🏎️',
+        tagline: 'Super-fast mini race car',
+        description: 'Zoom around the track with this turbo-charged mini race car. Perfect for kids who love speed, bright colors, and engine sounds made with their own voices!',
+        funFact: 'Fun mission: can you make 3 laps around the room without crashing into any chairs?'
+      },
+      {
+        id: 'rocket-ship',
+        name: 'Cosmic Rocket',
+        emoji: '🚀',
+        tagline: 'Blast off into space',
+        description: 'Fly to the moon, dodge silly space bananas, and visit friendly space robots. This rocket toy is ready for big imaginations.',
+        funFact: 'Fun mission: count down from 10 really loudly before every launch.'
+      },
+      {
+        id: 'monster-truck',
+        name: 'Mega Monster Truck',
+        emoji: '🚚',
+        tagline: 'Big wheels, big jumps',
+        description: 'Crunch tiny obstacles and jump over imaginary ramps. Mega Monster Truck loves bumpy roads and loud cheers.',
+        funFact: 'Fun mission: build a pillow ramp and see how far your truck can jump.'
+      },
+      {
+        id: 'hover-board',
+        name: 'Neon Hover Board',
+        emoji: '🛹',
+        tagline: 'Glide with glowing lights',
+        description: 'A pretend hover board with neon glow. Ride through your living room city and keep your balance like a pro.',
+        funFact: 'Fun mission: move in slow motion like you are in space while riding.'
+      }
+    ];
+
+    const listView = document.getElementById('list-view');
+    const detailView = document.getElementById('detail-view');
+    const itemsGrid = document.getElementById('items-grid');
+
+    function renderList() {
+      itemsGrid.innerHTML = '';
+      itemsData.forEach(item => {
+        const card = document.createElement('article');
+        card.className = 'item-card';
+        card.tabIndex = 0;
+        card.setAttribute('role', 'button');
+        card.setAttribute('aria-label', `Open details for ${item.name}`);
+        card.innerHTML = `
+          <div class="item-icon-wrap">${item.emoji}</div>
+          <div class="item-chip">Tap to view</div>
+          <div class="item-name">${item.name}</div>
+          <div class="item-tagline">${item.tagline}</div>
+        `;
+        card.addEventListener('click', () => openDetail(item.id));
+        card.addEventListener('keypress', (e) => {
+          if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            openDetail(item.id);
+          }
+        });
+        itemsGrid.appendChild(card);
+      });
+    }
+
+    function openDetail(id) {
+      const item = itemsData.find(x => x.id === id);
+      if (!item) return;
+
+      listView.hidden = true;
+      detailView.hidden = false;
+
+      detailView.innerHTML = `
+        <div class="page-label">Toy details</div>
+        <div class="detail-layout">
+          <div class="detail-top-row">
+            <div class="back-link" id="back-from-detail">
+              <span>←</span><span>Back</span>
+            </div>
+            <div class="badge-soft">Collect at the store</div>
+          </div>
+          <div class="detail-hero">
+            <div class="detail-icon">${item.emoji}</div>
+            <div>
+              <div class="detail-title">${item.name}</div>
+              <div class="detail-subtitle">${item.tagline}</div>
+              <div class="detail-body">
+                <span class="detail-body-emoji">✨</span>${item.description}
+              </div>
+            </div>
+          </div>
+          <div class="order-panel">
+            <button class="order-button" id="order-button">
+              <span>🎁</span><span>Place Order</span>
+            </button>
+            <div class="order-meta">
+              <div class="pulse-dot"></div>
+              <span>Ask a grown-up when your toy is ready.</span>
+            </div>
+          </div>
+          <div id="status-area"></div>
+        </div>
+      `;
+
+      document.getElementById('back-from-detail').addEventListener('click', () => {
+        detailView.hidden = true;
+        listView.hidden = false;
+      });
+
+      document.getElementById('order-button').addEventListener('click', () => {
+        const status = document.getElementById('status-area');
+        status.innerHTML = `
+          <div class="status-banner">
+            <div class="status-icon">✅</div>
+            <div>
+              <div class="status-label">Order placed</div>
+              <div class="status-main">Go collect it from the store when your name is called!</div>
+            </div>
+          </div>
+        `;
+      });
+    }
+
+    renderList();
+  </script>
+</body>
+</html>

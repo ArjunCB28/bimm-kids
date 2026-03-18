@@ -3,26 +3,24 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Kids Store</title>
+  <title>Soccer Player Hub</title>
   <style>
     :root {
-      --primary-bg: #fff8ef;
-      --primary-accent: #f97316;
-      --primary-accent-soft: #ffedd5;
+      --primary-bg: #f2fcf5;
+      --primary-accent: #4f9d69;
+      --primary-accent-soft: #dcf7e5;
       --card-bg: #ffffff;
-      --text-main: #1f2937;
-      --text-muted: #6b7280;
-      --button-bg: #22c55e;
-      --button-bg-soft: #dcfce7;
-      --button-text: #14532d;
+      --text-main: #1f2933;
+      --text-muted: #5f7368;
+      --button-bg: #4f9d69;
+      --button-bg-soft: #dcf7e5;
+      --button-text: #133222;
     }
 
     * { box-sizing: border-box; margin: 0; padding: 0; }
     body {
       font-family: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
-      background:
-        radial-gradient(circle at top, rgba(251, 191, 36, 0.28), transparent 34%),
-        linear-gradient(180deg, #fff7ed 0%, #fefce8 45%, #eff6ff 100%);
+      background: var(--primary-bg);
       color: var(--text-main);
       min-height: 100svh;
       display: flex;
@@ -35,12 +33,11 @@
       width: 100%;
       max-width: 480px;
       min-height: calc(100svh - 32px);
-      background: rgba(255,255,255,0.88);
+      background: #ffffff;
       border-radius: 24px;
-      border: 1px solid rgba(251,146,60,0.25);
-      box-shadow: 0 24px 60px rgba(251,146,60,0.18);
+      border: 1px solid #cfe7d7;
+      box-shadow: 0 12px 28px rgba(79,157,105,0.12);
       overflow: hidden;
-      backdrop-filter: blur(14px);
     }
 
     .app-header {
@@ -48,52 +45,43 @@
       display: flex;
       align-items: center;
       gap: 10px;
-      background: linear-gradient(135deg, rgba(249,115,22,0.2), rgba(125,211,252,0.22));
-      border-bottom: 1px solid rgba(251,146,60,0.2);
+      background: #d9f4e1;
+      border-bottom: 1px solid #b8dfc5;
     }
 
     .app-logo {
       width: 32px;
       height: 32px;
       border-radius: 999px;
-      background: radial-gradient(circle at 30% 30%, #fee2e2, #f97316);
+      background: #b8e7c8;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 20px;
-      box-shadow: 0 0 0 3px rgba(255,255,255,0.65);
+      box-shadow: 0 0 0 2px rgba(255,255,255,0.9);
     }
 
     .app-title {
       display: flex;
       flex-direction: column;
       gap: 2px;
-      padding: 10px 14px;
-      border-radius: 18px;
-      background: rgba(255,255,255,0.72);
-      border: 1px solid rgba(255,255,255,0.65);
-      box-shadow: 0 10px 24px rgba(249,115,22,0.1);
-      backdrop-filter: blur(12px);
+      padding: 2px 0;
     }
 
     .app-title-main {
-      font-weight: 900;
-      letter-spacing: 0.05em;
-      font-size: 24px;
+      font-weight: 800;
+      letter-spacing: 0.03em;
+      font-size: 22px;
       line-height: 1;
       text-transform: uppercase;
-      background: linear-gradient(135deg, #ea580c, #f59e0b 48%, #0284c7);
-      -webkit-background-clip: text;
-      background-clip: text;
-      color: transparent;
-      text-shadow: 0 8px 20px rgba(249, 115, 22, 0.12);
+      color: #1d4f33;
     }
 
     .app-title-sub {
-      font-size: 12px;
-      font-weight: 600;
+      font-size: 11px;
+      font-weight: 500;
       letter-spacing: 0.02em;
-      color: #475569;
+      color: #436253;
     }
 
     .app-body {
@@ -101,12 +89,12 @@
       max-height: 80vh;
       overflow-y: auto;
       scrollbar-width: thin;
-      scrollbar-color: rgba(251,146,60,0.45) transparent;
+      scrollbar-color: rgba(79,157,105,0.45) transparent;
     }
 
     .app-body::-webkit-scrollbar { width: 6px; }
     .app-body::-webkit-scrollbar-thumb {
-      background: rgba(251,146,60,0.45);
+      background: rgba(79,157,105,0.45);
       border-radius: 999px;
     }
 
@@ -132,44 +120,37 @@
 
     .item-card {
       position: relative;
-      background: radial-gradient(circle at top left, rgba(255,237,213,0.9), var(--card-bg));
-      border-radius: 18px;
+      background: var(--card-bg);
+      border-radius: 14px;
       padding: 10px 10px 12px;
-      border: 1px solid rgba(251,146,60,0.22);
+      border: 1px solid #d6e8dd;
       cursor: pointer;
       overflow: hidden;
-      transition: transform 0.14s ease, box-shadow 0.14s ease, border-color 0.14s ease;
+      transition: transform 0.14s ease, box-shadow 0.14s ease;
     }
 
     .item-card::before {
-      content: "";
-      position: absolute;
-      inset: -40%;
-      background: radial-gradient(circle at 0 0, rgba(249,115,22,0.18), transparent 55%);
-      opacity: 0;
-      transition: opacity 0.2s ease;
-      pointer-events: none;
+      content: none;
     }
 
     .item-card:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 18px 32px rgba(251,146,60,0.22);
-      border-color: rgba(249,115,22,0.45);
+      transform: translateY(-1px);
+      box-shadow: 0 8px 16px rgba(79,157,105,0.14);
     }
 
-    .item-card:hover::before { opacity: 1; }
+    .item-card:hover::before { opacity: 0; }
 
     .item-icon-wrap {
       width: 60px;
       height: 60px;
-      border-radius: 18px;
-      background: radial-gradient(circle at 20% 20%, #fef3c7, var(--primary-accent));
+      border-radius: 14px;
+      background: #ecf9f0;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 34px;
       margin-bottom: 8px;
-      box-shadow: 0 12px 22px rgba(249,115,22,0.24);
+      box-shadow: none;
     }
 
     .item-name {
@@ -192,9 +173,9 @@
       letter-spacing: 0.12em;
       padding: 4px 7px;
       border-radius: 999px;
-      background: rgba(34,197,94,0.12);
-      color: #166534;
-      border: 1px solid rgba(74,222,128,0.45);
+      background: #e8f6ed;
+      color: #25613f;
+      border: 1px solid #cbe8d6;
     }
 
     .pill-row {
@@ -209,15 +190,15 @@
       font-size: 10px;
       text-transform: uppercase;
       letter-spacing: 0.14em;
-      border: 1px solid rgba(251,146,60,0.2);
+      border: 1px solid #cfe7d7;
       color: var(--text-muted);
-      background: rgba(255,255,255,0.82);
+      background: #f8fdf9;
     }
 
     .pill--accent {
-      border-color: rgba(249,115,22,0.5);
-      color: #c2410c;
-      background: rgba(249,115,22,0.1);
+      border-color: #9bcfb0;
+      color: #1f5f3d;
+      background: #e8f6ed;
     }
 
     .detail-layout {
@@ -243,8 +224,8 @@
       opacity: 0.85;
       padding: 3px 7px;
       border-radius: 999px;
-      border: 1px solid rgba(251,146,60,0.22);
-      background: rgba(255,255,255,0.85);
+      border: 1px solid #cfe7d7;
+      background: #f5fcf7;
     }
 
     .back-link span:first-child {
@@ -258,8 +239,8 @@
       font-size: 10px;
       text-transform: uppercase;
       letter-spacing: 0.13em;
-      background: var(--button-bg-soft);
-      color: var(--button-text);
+      background: #e8f6ed;
+      color: #1f5f3d;
     }
 
     .detail-hero {
@@ -272,12 +253,12 @@
       width: 90px;
       height: 90px;
       border-radius: 28px;
-      background: radial-gradient(circle at 25% 25%, #fef9c3, var(--primary-accent));
+      background: #e8f6ed;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 56px;
-      box-shadow: 0 18px 35px rgba(249,115,22,0.22);
+      box-shadow: none;
     }
 
     .detail-title {
@@ -301,6 +282,37 @@
     .detail-body-emoji {
       font-size: 16px;
       margin-right: 4px;
+    }
+
+    .info-list {
+      margin-top: 12px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      font-size: 14px;
+      color: #334155;
+    }
+
+    .info-row {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      padding: 8px 10px;
+      border-radius: 10px;
+      background: #f6fbf8;
+      border: 1px solid #deefe3;
+    }
+
+    .info-row strong {
+      min-width: 120px;
+      color: #365446;
+    }
+
+    .color-dot {
+      width: 12px;
+      height: 12px;
+      border-radius: 999px;
+      border: 1px solid rgba(15,23,42,0.18);
     }
 
     .order-panel {
@@ -484,174 +496,264 @@
 <body>
   <div class="app-shell">
     <header class="app-header">
-      <div class="app-logo" aria-hidden="true">🚗</div>
+      <div class="app-logo" aria-hidden="true">⚽</div>
       <div class="app-title">
-        <div class="app-title-main">BIMM Kids Garage</div>
-        <div class="app-title-sub">Pick a fun ride and collect it in person</div>
+        <div class="app-title-main">BIMM Soccer</div>
+        <div class="app-title-sub">Simple team and player directory</div>
       </div>
     </header>
     <main class="app-body">
-      <section id="list-view" aria-label="Toy list">
-        <div class="page-label">Choose your ride</div>
-        <div class="page-heading">Tap a toy to order</div>
+      <section id="list-view" aria-label="Team list">
+        <div class="page-label">Choose a team</div>
+        <div class="page-heading">Tap a team to view players</div>
         <div class="pill-row">
-          <div class="pill pill--accent">No prices – just fun</div>
-          <div class="pill">Collect at the store</div>
+          <div class="pill pill--accent">4 teams</div>
+          <div class="pill">4 players each</div>
+          <div class="pill">Local JSON configurable</div>
         </div>
         <div id="items-grid" class="grid" aria-live="polite"></div>
       </section>
-      <section id="detail-view" hidden aria-label="Toy details"></section>
+      <section id="players-view" hidden aria-label="Player list">
+        <div class="detail-top-row" style="margin-bottom: 10px;">
+          <div class="back-link" id="back-to-teams">
+            <span>←</span><span>Teams</span>
+          </div>
+          <div class="badge-soft" id="players-count-badge">4 players</div>
+        </div>
+        <div class="page-label">Team players</div>
+        <div class="page-heading" id="players-heading">Select a player</div>
+        <div id="players-grid" class="grid" aria-live="polite"></div>
+      </section>
+      <section id="detail-view" hidden aria-label="Player details"></section>
     </main>
   </div>
 
   <script>
-    const theme = {
-      primaryBg: getComputedStyle(document.documentElement).getPropertyValue('--primary-bg'),
-      accent: getComputedStyle(document.documentElement).getPropertyValue('--primary-accent')
-    };
-
-    const itemsData = [
+    const defaultTeamsJson = [
       {
-        id: 'speedster-car',
-        name: 'Turbo Speedster',
-        emoji: '🏎️',
-        tagline: 'Super-fast mini race car',
-        description: 'Zoom around the track with this turbo-charged mini race car. Perfect for kids who love speed, bright colors, and engine sounds made with their own voices!',
-        funFact: 'Fun mission: can you make 3 laps around the room without crashing into any chairs?'
+        id: 'thunder-lions',
+        name: 'Inter Miami CF',
+        badge: '🦁',
+        players: [
+          { name: 'Lionel Messi', favColor: 'Blue', avatar: '⚽', position: 'Forward', matchesPlayed: 18, goalsScored: 14, assists: 7, jerseyNumber: 9, age: 12, preferredFoot: 'Right' },
+          { name: 'Manuel Neuer', favColor: 'Purple', avatar: '🥅', position: 'Goalkeeper', matchesPlayed: 20, goalsScored: 0, assists: 2, jerseyNumber: 1, age: 11, preferredFoot: 'Right' },
+          { name: 'Luka Modric', favColor: 'Green', avatar: '🏃', position: 'Midfielder', matchesPlayed: 19, goalsScored: 6, assists: 11, jerseyNumber: 8, age: 12, preferredFoot: 'Left' },
+          { name: 'Virgil van Dijk', favColor: 'Pink', avatar: '🧤', position: 'Defender', matchesPlayed: 17, goalsScored: 2, assists: 4, jerseyNumber: 4, age: 11, preferredFoot: 'Right' }
+        ]
       },
       {
-        id: 'rocket-ship',
-        name: 'Cosmic Rocket',
-        emoji: '🚀',
-        tagline: 'Blast off into space',
-        description: 'Fly to the moon, dodge silly space bananas, and visit friendly space robots. This rocket toy is ready for big imaginations.',
-        funFact: 'Fun mission: count down from 10 really loudly before every launch.'
+        id: 'coastal-eagles',
+        name: 'Al Nassr FC',
+        badge: '🦅',
+        players: [
+          { name: 'Cristiano Ronaldo', favColor: 'Orange', avatar: '⚽', position: 'Forward', matchesPlayed: 16, goalsScored: 12, assists: 5, jerseyNumber: 10, age: 12, preferredFoot: 'Left' },
+          { name: 'Kevin De Bruyne', favColor: 'Teal', avatar: '🏃', position: 'Midfielder', matchesPlayed: 18, goalsScored: 7, assists: 9, jerseyNumber: 7, age: 11, preferredFoot: 'Right' },
+          { name: 'Alisson Becker', favColor: 'Red', avatar: '🥅', position: 'Goalkeeper', matchesPlayed: 20, goalsScored: 0, assists: 1, jerseyNumber: 1, age: 12, preferredFoot: 'Right' },
+          { name: 'Sergio Ramos', favColor: 'Yellow', avatar: '🧤', position: 'Defender', matchesPlayed: 17, goalsScored: 1, assists: 3, jerseyNumber: 3, age: 11, preferredFoot: 'Left' }
+        ]
       },
       {
-        id: 'monster-truck',
-        name: 'Mega Monster Truck',
-        emoji: '🚚',
-        tagline: 'Big wheels, big jumps',
-        description: 'Crunch tiny obstacles and jump over imaginary ramps. Mega Monster Truck loves bumpy roads and loud cheers.',
-        funFact: 'Fun mission: build a pillow ramp and see how far your truck can jump.'
+        id: 'storm-wolves',
+        name: 'Real Madrid CF',
+        badge: '🐺',
+        players: [
+          { name: 'Kylian Mbappe', favColor: 'Navy', avatar: '⚽', position: 'Forward', matchesPlayed: 19, goalsScored: 15, assists: 6, jerseyNumber: 11, age: 12, preferredFoot: 'Right' },
+          { name: 'Jude Bellingham', favColor: 'Magenta', avatar: '🏃', position: 'Midfielder', matchesPlayed: 18, goalsScored: 5, assists: 10, jerseyNumber: 6, age: 11, preferredFoot: 'Left' },
+          { name: 'Ederson Moraes', favColor: 'Lime', avatar: '🥅', position: 'Goalkeeper', matchesPlayed: 20, goalsScored: 0, assists: 1, jerseyNumber: 1, age: 12, preferredFoot: 'Right' },
+          { name: 'Ruben Dias', favColor: 'Cyan', avatar: '🧤', position: 'Defender', matchesPlayed: 16, goalsScored: 2, assists: 2, jerseyNumber: 5, age: 11, preferredFoot: 'Right' }
+        ]
       },
       {
-        id: 'hover-board',
-        name: 'Neon Hover Board',
-        emoji: '🛹',
-        tagline: 'Glide with glowing lights',
-        description: 'A pretend hover board with neon glow. Ride through your living room city and keep your balance like a pro.',
-        funFact: 'Fun mission: move in slow motion like you are in space while riding.'
+        id: 'sunburst-tigers',
+        name: 'Manchester City FC',
+        badge: '🐯',
+        players: [
+          { name: 'Erling Haaland', favColor: 'Gold', avatar: '⚽', position: 'Forward', matchesPlayed: 17, goalsScored: 13, assists: 4, jerseyNumber: 9, age: 12, preferredFoot: 'Right' },
+          { name: 'Aitana Bonmati', favColor: 'Coral', avatar: '🏃', position: 'Midfielder', matchesPlayed: 18, goalsScored: 8, assists: 8, jerseyNumber: 8, age: 11, preferredFoot: 'Left' },
+          { name: 'Marc-Andre ter Stegen', favColor: 'Indigo', avatar: '🥅', position: 'Goalkeeper', matchesPlayed: 20, goalsScored: 0, assists: 0, jerseyNumber: 1, age: 12, preferredFoot: 'Right' },
+          { name: 'Lucy Bronze', favColor: 'Mint', avatar: '🧤', position: 'Defender', matchesPlayed: 16, goalsScored: 1, assists: 5, jerseyNumber: 2, age: 11, preferredFoot: 'Right' }
+        ]
       }
     ];
 
-    const listView = document.getElementById('list-view');
-    const detailView = document.getElementById('detail-view');
-    const itemsGrid = document.getElementById('items-grid');
+    const localConfigKey = 'soccerTeamsConfig';
 
-    function renderList() {
-      itemsGrid.innerHTML = '';
-      itemsData.forEach(item => {
-        const card = document.createElement('article');
-        card.className = 'item-card';
-        card.tabIndex = 0;
-        card.setAttribute('role', 'button');
-        card.setAttribute('aria-label', `Open details for ${item.name}`);
-        card.innerHTML = `
-          <div class="item-icon-wrap">${item.emoji}</div>
-          <div class="item-chip">Tap to view</div>
-          <div class="item-name">${item.name}</div>
-          <div class="item-tagline">${item.tagline}</div>
-        `;
-        card.addEventListener('click', () => openDetail(item.id));
-        card.addEventListener('keypress', (e) => {
-          if (e.key === 'Enter' || e.key === ' ') {
-            e.preventDefault();
-            openDetail(item.id);
-          }
-        });
-        itemsGrid.appendChild(card);
+    function normalizePlayer(player) {
+      return {
+        name: typeof player?.name === 'string' ? player.name : 'Unknown Player',
+        favColor: typeof player?.favColor === 'string' ? player.favColor : 'Gray',
+        avatar: typeof player?.avatar === 'string' ? player.avatar : '⚽',
+        position: typeof player?.position === 'string' ? player.position : 'Midfielder',
+        matchesPlayed: Number.isFinite(player?.matchesPlayed) ? player.matchesPlayed : 0,
+        goalsScored: Number.isFinite(player?.goalsScored) ? player.goalsScored : 0,
+        assists: Number.isFinite(player?.assists) ? player.assists : 0,
+        jerseyNumber: Number.isFinite(player?.jerseyNumber) ? player.jerseyNumber : 0,
+        age: Number.isFinite(player?.age) ? player.age : 0,
+        preferredFoot: typeof player?.preferredFoot === 'string' ? player.preferredFoot : 'Right'
+      };
+    }
+
+    function normalizeTeam(team, index) {
+      const safePlayers = Array.isArray(team?.players) ? team.players.slice(0, 4).map(normalizePlayer) : [];
+      return {
+        id: typeof team?.id === 'string' ? team.id : `team-${index + 1}`,
+        name: typeof team?.name === 'string' ? team.name : `Team ${index + 1}`,
+        badge: typeof team?.badge === 'string' ? team.badge : '⚽',
+        players: safePlayers
+      };
+    }
+
+    function loadTeamsData() {
+      try {
+        const raw = localStorage.getItem(localConfigKey);
+        if (!raw) return defaultTeamsJson.map(normalizeTeam);
+
+        const parsed = JSON.parse(raw);
+        if (!Array.isArray(parsed) || parsed.length !== 4) return defaultTeamsJson.map(normalizeTeam);
+
+        const hasValidTeams = parsed.every(team =>
+          team &&
+          typeof team.name === 'string' &&
+          typeof team.badge === 'string' &&
+          Array.isArray(team.players) &&
+          team.players.length === 4
+        );
+
+        return hasValidTeams ? parsed.map(normalizeTeam) : defaultTeamsJson.map(normalizeTeam);
+      } catch {
+        return defaultTeamsJson.map(normalizeTeam);
+      }
+    }
+
+    const teamsData = loadTeamsData();
+
+    const teamsView = document.getElementById('list-view');
+    const playersView = document.getElementById('players-view');
+    const detailView = document.getElementById('detail-view');
+    const teamsGrid = document.getElementById('items-grid');
+    const playersGrid = document.getElementById('players-grid');
+    const playersHeading = document.getElementById('players-heading');
+    const playersCountBadge = document.getElementById('players-count-badge');
+
+    function makeCard({ icon, chip, name, tagline, onActivate }) {
+      const card = document.createElement('article');
+      card.className = 'item-card';
+      card.tabIndex = 0;
+      card.setAttribute('role', 'button');
+      card.setAttribute('aria-label', `Open details for ${name}`);
+      card.innerHTML = `
+        <div class="item-icon-wrap">${icon}</div>
+        <div class="item-chip">${chip}</div>
+        <div class="item-name">${name}</div>
+        <div class="item-tagline">${tagline}</div>
+      `;
+
+      card.addEventListener('click', onActivate);
+      card.addEventListener('keypress', (event) => {
+        if (event.key === 'Enter' || event.key === ' ') {
+          event.preventDefault();
+          onActivate();
+        }
+      });
+
+      return card;
+    }
+
+    function renderTeams() {
+      teamsGrid.innerHTML = '';
+      teamsData.forEach(team => {
+        teamsGrid.appendChild(
+          makeCard({
+            icon: team.badge,
+            chip: 'Team',
+            name: team.name,
+            tagline: `${team.players.length} players`,
+            onActivate: () => openPlayers(team.id)
+          })
+        );
       });
     }
 
-    function generateOrderId() {
-      const randomPart = Math.floor(100000 + Math.random() * 900000);
-      return `BIMM-${randomPart}`;
+    function openPlayers(teamId) {
+      const team = teamsData.find(entry => entry.id === teamId);
+      if (!team) return;
+
+      teamsView.hidden = true;
+      detailView.hidden = true;
+      playersView.hidden = false;
+
+      playersHeading.textContent = team.name;
+      playersCountBadge.textContent = `${team.players.length} players`;
+      playersGrid.innerHTML = '';
+
+      team.players.forEach((player, index) => {
+        playersGrid.appendChild(
+          makeCard({
+            icon: player.avatar,
+            chip: 'Player',
+            name: player.name,
+            tagline: `${player.position} • Goals: ${player.goalsScored}`,
+            onActivate: () => openPlayerDetail(team.id, index)
+          })
+        );
+      });
     }
 
-    function openDetail(id) {
-      const item = itemsData.find(x => x.id === id);
-      if (!item) return;
+    function openPlayerDetail(teamId, playerIndex) {
+      const team = teamsData.find(entry => entry.id === teamId);
+      if (!team) return;
 
-      listView.hidden = true;
+      const player = team.players[playerIndex];
+      if (!player) return;
+
+      playersView.hidden = true;
       detailView.hidden = false;
 
       detailView.innerHTML = `
-        <div class="page-label">Toy details</div>
+        <div class="page-label">Player details</div>
         <div class="detail-layout">
           <div class="detail-top-row">
-            <div class="back-link" id="back-from-detail">
-              <span>←</span><span>Back</span>
+            <div class="back-link" id="back-to-players">
+              <span>←</span><span>Players</span>
             </div>
-            <div class="badge-soft">Collect at the store</div>
+            <div class="badge-soft">${team.name}</div>
           </div>
           <div class="detail-hero">
-            <div class="detail-icon">${item.emoji}</div>
+            <div class="detail-icon">${player.avatar}</div>
             <div>
-              <div class="detail-title">${item.name}</div>
-              <div class="detail-subtitle">${item.tagline}</div>
-              <div class="detail-body">
-                <span class="detail-body-emoji">✨</span>${item.description}
-              </div>
+              <div class="detail-title">${player.name}</div>
+              <div class="detail-subtitle">${team.name}</div>
+              <div class="detail-body">${player.position} profile</div>
             </div>
           </div>
-          <div class="order-panel" id="order-panel">
-            <button class="order-button" id="order-button">
-              <span>🎁</span><span>Place Order</span>
-            </button>
-            <div class="order-meta">
-              <div class="pulse-dot"></div>
-              <span>Ask a grown-up when your toy is ready.</span>
-            </div>
+          <div class="info-list">
+            <div class="info-row"><strong>Name:</strong> <span>${player.name}</span></div>
+            <div class="info-row"><strong>Position:</strong> <span>${player.position}</span></div>
+            <div class="info-row"><strong>Favorite color:</strong> <span class="color-dot" style="background:${player.favColor};"></span><span>${player.favColor}</span></div>
+            <div class="info-row"><strong>Avatar:</strong> <span>${player.avatar}</span></div>
+            <div class="info-row"><strong>Matches played:</strong> <span>${player.matchesPlayed}</span></div>
+            <div class="info-row"><strong>Goals scored:</strong> <span>${player.goalsScored}</span></div>
+            <div class="info-row"><strong>Assists:</strong> <span>${player.assists}</span></div>
+            <div class="info-row"><strong>Jersey number:</strong> <span>#${player.jerseyNumber}</span></div>
+            <div class="info-row"><strong>Age:</strong> <span>${player.age}</span></div>
+            <div class="info-row"><strong>Preferred foot:</strong> <span>${player.preferredFoot}</span></div>
           </div>
-          <div id="status-area"></div>
         </div>
       `;
 
-      document.getElementById('back-from-detail').addEventListener('click', () => {
+      document.getElementById('back-to-players').addEventListener('click', () => {
         detailView.hidden = true;
-        listView.hidden = false;
-      });
-
-      document.getElementById('order-button').addEventListener('click', () => {
-        const orderPanel = document.getElementById('order-panel');
-        const status = document.getElementById('status-area');
-        const orderId = generateOrderId();
-
-        orderPanel.hidden = true;
-        status.innerHTML = `
-          <section class="success-section" aria-live="polite">
-            <div class="success-top">
-              <div class="success-icon">✅</div>
-              <div>
-                <div class="success-label">Order successfully placed</div>
-                <div class="success-title">${item.name} is booked for pickup</div>
-              </div>
-            </div>
-            <div class="success-message">
-              Your order has been placed successfully. Go to the store and collect it when your name is called.
-            </div>
-            <div class="success-order-id">
-              Order ID
-              <strong>${orderId}</strong>
-            </div>
-            <div class="success-note">Show this screen to a grown-up when it is time to pick up your toy.</div>
-          </section>
-        `;
+        openPlayers(team.id);
       });
     }
 
-    renderList();
+    document.getElementById('back-to-teams').addEventListener('click', () => {
+      playersView.hidden = true;
+      detailView.hidden = true;
+      teamsView.hidden = false;
+    });
+
+    renderTeams();
   </script>
 </body>
 </html>
